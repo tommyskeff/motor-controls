@@ -1,11 +1,13 @@
 import asyncio
 from simple_display import SliderWindow
+from vesc_controller import MotorVESC
 
 CYCLE_INTERVAL = 0.01
 
-class MotorController:
+class SpeedRegulator:
 
-    def __init__(self, window: SliderWindow, acceleration_limit: float) -> None:
+    def __init__(self, controller: MotorVESC, window: SliderWindow, acceleration_limit: float) -> None:
+        self._controller = controller
         self._window = window
         self._running = False
         self._current_speed = 1000
@@ -37,6 +39,7 @@ class MotorController:
 
     def _set_motor_speed(self, speed: int) -> None:
         self._current_speed = speed
+        self._controller.set_speed(speed)
         self._window.set_text(f"RPM: {speed}")
 
     def _cycle(self) -> None:

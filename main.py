@@ -1,16 +1,30 @@
-from motor_controls import MotorController
+from serial import SerialException
+from speed_regulator import SpeedRegulator
+from vesc_controller import MotorVESC
 from simple_display import SliderWindow
 import asyncio
 
-async def main():
-    slider = SliderWindow()
-    motor = MotorController(slider, 300)
+PORT = "COM3"
+ACC_LIM = 300
 
-    motor_task = asyncio.create_task(motor.start())
+async def main():
+    motor = MotorVESC(PORT)
+
+    try:
+        motor.connect()
+    except SerialException:
+        print(f"Unable to connect to port {PORT}")
+        return
+
+    slider = SliderWindow()
+    regulator = SpeedRegulator(motor, slider, ACC_LIM)
+
+    motor_task = asyncio.create_task(regulator.start())
     slider_task = asyncio.create_task(slider.run())
+    
 
     await slider_task
-
+    motor.close()
 
 
 if __name__ == "__main__":
