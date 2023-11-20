@@ -50,8 +50,8 @@ class DummyVESC(MotorVESC):
             print("Dummy initialized motor speed controller.")
 
 
-        # if random.random() > 0.995:
-        #     print(f"Dummy set motor speed {speed}")
+        if random.random() > 0.995:
+            print(f"Dummy set motor speed {speed}")
         
 
     def _send_message(self, message) -> None:

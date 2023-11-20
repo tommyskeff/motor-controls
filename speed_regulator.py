@@ -46,7 +46,7 @@ class SpeedRegulator:
     def _set_motor_speed(self, speed: int) -> None:
         self._current_speed = speed
         self._controller.set_speed(speed)
-        self._window.set_text(f"RPM: {speed}")
+        self._window.set_text(f"Speed: {speed}")
 
     def _cycle(self) -> None:
         self._potentiometer_reading = self._window.get_slider_value()

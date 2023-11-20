@@ -5,7 +5,7 @@ from simple_display import SliderWindow
 import asyncio
 
 PORT = "COM3"
-ACC_LIM = 300
+ACC_LIM = 150
 
 async def main():
     # motor = MotorVESC(PORT)
@@ -20,11 +20,9 @@ async def main():
     slider = SliderWindow()
     regulator = SpeedRegulator(motor, slider, ACC_LIM)
 
-    motor_task = asyncio.create_task(regulator.start())
-    slider_task = asyncio.create_task(slider.run())
-    
+    asyncio.create_task(regulator.start())
+    await asyncio.create_task(slider.run())
 
-    await slider_task
     motor.close()
 
 
