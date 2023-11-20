@@ -5,17 +5,18 @@ from simple_display import SliderWindow
 import asyncio
 
 PORT = "COM3"
-ACC_LIM = 150
+ACC_LIM = 250
 
 async def main():
-    # motor = MotorVESC(PORT)
-    motor = DummyVESC(PORT)
+    motor = MotorVESC(PORT)
+    # motor = DummyVESC(PORT)
 
-    try:
-        motor.connect()
-    except SerialException:
-        print(f"Unable to connect to port {PORT}")
-        return
+    #try:
+    motor.connect()
+    #
+    # except SerialException:
+    #    print(f"Unable to connect to port {PORT}")
+    #    return
 
     slider = SliderWindow()
     regulator = SpeedRegulator(motor, slider, ACC_LIM)

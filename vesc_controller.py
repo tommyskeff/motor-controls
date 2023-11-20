@@ -15,11 +15,11 @@ class MotorVESC:
 
     def connect(self) -> None:
         self._conn = serial.Serial(self._port, baudrate=BAUD_RATE, timeout=TIMEOUT)
-        self._conn.open()
+        # self._conn.open()
 
     def close(self) -> None:
         self.set_speed(0)
-        self._conn.close()
+        # self._conn.close()
 
     def set_speed(self, speed: int) -> None:
         if not self._set_mode:
@@ -27,7 +27,7 @@ class MotorVESC:
             self._send_message(SetRotorPositionMode(SetRotorPositionMode.DISP_POS_MODE_ENCODER))
 
         self._send_message(SetRPM(speed))
-        self._send_message(GetValues)
+        # self._send_message(GetValues)
         
 
     def _send_message(self, message) -> None:
