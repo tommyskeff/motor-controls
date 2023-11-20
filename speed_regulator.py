@@ -1,8 +1,14 @@
 import asyncio
+import math
 from simple_display import SliderWindow
 from vesc_controller import MotorVESC
 
 CYCLE_INTERVAL = 0.01
+DISABLED_SPEED = 1000
+MAXIMUM_SPEED = 10000
+VAL_ZEROS = 2
+
+zerosPower = math.pow(10, VAL_ZEROS)
 
 class SpeedRegulator:
 
@@ -10,8 +16,8 @@ class SpeedRegulator:
         self._controller = controller
         self._window = window
         self._running = False
-        self._current_speed = 1000
-        self._speed_desired = 1000
+        self._current_speed = DISABLED_SPEED
+        self._speed_desired = DISABLED_SPEED
         self._potentiometer_reading = 0
         self._acceleration_limit = acceleration_limit
 
@@ -28,8 +34,8 @@ class SpeedRegulator:
         return self._running
 
     def _calculate_speed_increment(self):
-        speed_desired = 1000 + self._potentiometer_reading * (20000 - 1000)
-        speed_desired = speed_desired // 100 * 100
+        speed_desired = 1000 + self._potentiometer_reading * (MAXIMUM_SPEED - DISABLED_SPEED)
+        speed_desired = speed_desired // zerosPower * zerosPower
 
         speed_difference = speed_desired - self._current_speed
         increment_speed = speed_difference / 1
@@ -46,5 +52,5 @@ class SpeedRegulator:
         self._potentiometer_reading = self._window.get_slider_value()
         increment = self._calculate_speed_increment()
         current_speed = self._current_speed + int(increment)
-        current_speed = max(min(current_speed, 20000), 1000)
+        current_speed = max(min(current_speed, MAXIMUM_SPEED), DISABLED_SPEED)
         self._set_motor_speed(current_speed) 

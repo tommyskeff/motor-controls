@@ -1,6 +1,6 @@
 from serial import SerialException
 from speed_regulator import SpeedRegulator
-from vesc_controller import MotorVESC
+from vesc_controller import MotorVESC, DummyVESC
 from simple_display import SliderWindow
 import asyncio
 
@@ -8,7 +8,8 @@ PORT = "COM3"
 ACC_LIM = 300
 
 async def main():
-    motor = MotorVESC(PORT)
+    # motor = MotorVESC(PORT)
+    motor = DummyVESC(PORT)
 
     try:
         motor.connect()
