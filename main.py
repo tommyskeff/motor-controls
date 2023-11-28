@@ -6,10 +6,11 @@ from exceptions import StartupException
 import asyncio
 import logging
 import sys
+import time
 
 ACC_LIM = 250
 LOG_FILE = "latest.log"
-MOTOR_MODE = "DUMMY" # DUMMY or VESC
+MOTOR_MODE = "VESC" # DUMMY or VESC
 BASIC_WINDOW = True
 
 LOGGER = logging.getLogger(__name__)
@@ -28,6 +29,8 @@ async def entrypoint():
     LOGGER.addHandler(console_log)
 
     try:
+        LOGGER.info("Starting motor control program...")
+        await asyncio.sleep(1.5)
         await main()
     except StartupException as e:
         LOGGER.error("Failed to start the motor controller: " + str(e))
@@ -57,4 +60,8 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(entrypoint())
+    try:
+        asyncio.run(entrypoint())
+    except KeyboardInterrupt:
+        LOGGER.info("Shutting down motor control program...")
+        time.sleep(1)
