@@ -21,17 +21,21 @@ class SpeedRegulator:
         self._potentiometer_reading = 0
         self._acceleration_limit = acceleration_limit
 
+
     async def start(self) -> None:
         self._running = True
         while self._running:
             self._cycle()
             await asyncio.sleep(CYCLE_INTERVAL)
 
+
     def stop(self) -> None:
         self._running = False
 
+
     def is_running(self) -> bool:
         return self._running
+
 
     def _calculate_speed_increment(self):
         speed_desired = DISABLED_SPEED + self._potentiometer_reading * (MAXIMUM_SPEED - DISABLED_SPEED)
@@ -45,14 +49,17 @@ class SpeedRegulator:
 
         return speed_difference
 
+
     def _set_motor_speed(self, speed: int) -> None:
         self._current_speed = speed
         self._controller.set_speed(speed)
         self._window.set_text(f"Speed: {speed}")
+
 
     def _cycle(self) -> None:
         self._potentiometer_reading = self._window.get_slider_value()
         increment = self._calculate_speed_increment()
         current_speed = self._current_speed + int(increment)
         current_speed = max(min(current_speed, MAXIMUM_SPEED), DISABLED_SPEED)
-        self._set_motor_speed(current_speed) 
+        self._set_motor_speed(current_speed)
+        

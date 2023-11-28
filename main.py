@@ -5,19 +5,20 @@ from device_manager import DeviceManager
 from exceptions import StartupException
 import asyncio
 import logging
+import sys
 
 ACC_LIM = 250
 LOG_FILE = "latest.log"
-LOGGER = logging.getLogger('motor_controller')
 MOTOR_MODE = "DUMMY" # DUMMY or VESC
+BASIC_WINDOW = True
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
 
 
 async def entrypoint():
     debug_log = logging.FileHandler(LOG_FILE)
-    debug_log.setLevel(logging.DEBUG)
-    
-    console_log = logging.StreamHandler()
-    console_log.setLevel(logging.INFO)
+    console_log = logging.StreamHandler(sys.stdout)
 
     formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
     debug_log.setFormatter(formatter)
@@ -25,7 +26,6 @@ async def entrypoint():
    
     LOGGER.addHandler(debug_log)
     LOGGER.addHandler(console_log)
-    
 
     try:
         await main()
@@ -39,9 +39,9 @@ async def main():
 
     match MOTOR_MODE:
         case "DUMMY":
-            motor = DummyVESC(port)
+            motor = DummyVESC(LOGGER, port)
         case "VESC":
-            motor = MotorVESC(port)
+            motor = MotorVESC(LOGGER, port)
         case other:
             raise StartupException(f"Invalid motor mode '{MOTOR_MODE}', options are DUMMY and VESC")
         
