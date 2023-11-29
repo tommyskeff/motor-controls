@@ -1,7 +1,7 @@
+from controller.simple_display import SliderWindow
+from controller.vesc_controller import MotorVESC
 import asyncio
 import math
-from simple_display import SliderWindow
-from vesc_controller import MotorVESC
 
 CYCLE_INTERVAL = 0.01
 DISABLED_SPEED = 800

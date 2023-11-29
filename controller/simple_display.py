@@ -14,7 +14,7 @@ class SliderWindow:
         self.slider.pack(padx=20, pady=20)
 
         self.label_text = tk.StringVar()
-        self.label = tk.Label(self.root, textvariable=self.label_text, font=('Arial', 18))
+        self.label = tk.Label(self.root, textvariable=self.label_text, font=('Comic Sans', 18))
         self.label.pack(pady=10)
 
         self.root.protocol("WM_DELETE_WINDOW", self._on_closing)

@@ -1,15 +1,18 @@
-from speed_regulator import SpeedRegulator
-from vesc_controller import MotorVESC, DummyVESC
-from simple_display import SliderWindow
-from device_manager import DeviceManager
-from exceptions import StartupException
+from controller.speed_regulator import SpeedRegulator
+from controller.vesc_controller import MotorVESC, DummyVESC
+from controller.simple_display import SliderWindow
+from controller.device_manager import DeviceManager
+from controller.exceptions import StartupException
 import asyncio
 import logging
 import sys
+import os
 import time
 
 ACC_LIM = 250
+LOG_FOLDER = "logs"
 LOG_FILE = "latest.log"
+DEVICE_FILE = "config/device.conf"
 MOTOR_MODE = "VESC" # DUMMY or VESC
 BASIC_WINDOW = True
 
@@ -17,27 +20,34 @@ LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.DEBUG)
 
 
-async def entrypoint():
-    debug_log = logging.FileHandler(LOG_FILE)
+def main():
     console_log = logging.StreamHandler(sys.stdout)
-
     formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
-    debug_log.setFormatter(formatter)
     console_log.setFormatter(formatter)
-   
-    LOGGER.addHandler(debug_log)
     LOGGER.addHandler(console_log)
-
+    
     try:
+        try:
+            os.mkdir(LOG_FOLDER)
+        except FileExistsError:
+            pass
+        
+        debug_log = logging.FileHandler(LOG_FOLDER + "/" + LOG_FILE)
+        debug_log.setFormatter(formatter)
+        LOGGER.addHandler(debug_log)
+        
         LOGGER.info("Starting motor control program...")
-        await asyncio.sleep(1.5)
-        await main()
+        time.sleep(1.5)
+        asyncio.run(main_async())
     except StartupException as e:
         LOGGER.error("Failed to start the motor controller: " + str(e))
+    except KeyboardInterrupt:
+        LOGGER.info("Shutting down motor control program...")
+        time.sleep(1)
 
 
-async def main():
-    device_manager = DeviceManager()
+async def main_async():
+    device_manager = DeviceManager(DEVICE_FILE)
     port = device_manager.read_port_from_file()
 
     match MOTOR_MODE:
@@ -60,8 +70,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(entrypoint())
-    except KeyboardInterrupt:
-        LOGGER.info("Shutting down motor control program...")
-        time.sleep(1)
+    main()
+        
