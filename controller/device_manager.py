@@ -21,9 +21,9 @@ class DeviceManager:
         
         for line in lines:
             if line.startswith(DEVICE_PREFIX):
-                device = line[len(DEVICE_PREFIX):]
+                device = line[len(DEVICE_PREFIX):].strip()
             if line.startswith(SLIDER_PREFIX):
-                slider = line[len(SLIDER_PREFIX):]
+                slider = line[len(SLIDER_PREFIX):].strip()
                 
         if (not device) or (not slider):
             raise StartupException(f"Invalid device specified in config '{self._path}'")
