@@ -1,6 +1,7 @@
 from controller.exceptions import StartupException
 
-CONF_PREFIX = "device="
+DEVICE_PREFIX = "device="
+SLIDER_PREFIX = "slider-device="
 
 class DeviceManager:
 
@@ -16,11 +17,15 @@ class DeviceManager:
             raise StartupException(f"Device file '{self._path}' does not exist in the filesystem")
         
         device = None
+        slider = None
+        
         for line in lines:
-            if line.startswith(CONF_PREFIX):
-                device = line[len(CONF_PREFIX):]
+            if line.startswith(DEVICE_PREFIX):
+                device = line[len(DEVICE_PREFIX):]
+            if line.startswith(SLIDER_PREFIX):
+                slider = line[len(SLIDER_PREFIX):]
                 
-        if not device:
+        if (not device) or (not slider):
             raise StartupException(f"Invalid device specified in config '{self._path}'")
         
-        return device
+        return device, slider

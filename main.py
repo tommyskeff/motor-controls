@@ -49,7 +49,7 @@ def main():
 
 async def main_async():
     device_manager = DeviceManager(DEVICE_FILE)
-    port = device_manager.read_port_from_file()
+    port, slider_port = device_manager.read_port_from_file()
     slider = SliderWindow()
 
     tasks = []
@@ -60,7 +60,7 @@ async def main_async():
             motor = MotorVESC(LOGGER, port)
         case "DUMMY_PICO":
             motor = DummyVESC(LOGGER, port)
-            pb = PicoBoard("COM7")
+            pb = PicoBoard(slider_port)
             tasks.append(lambda : run_pico(pb, slider))
             
         case other:
