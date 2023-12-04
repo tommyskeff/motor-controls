@@ -25,6 +25,10 @@ class SliderWindow:
         while self._running:
             await asyncio.sleep(0.001)
             self.root.update()
+            
+    def set_slider_value(self, value) -> None:
+        self.slider.set(value)
+        self._slider_value = value
 
     def _on_slider_change(self, event):
         self._slider_value = float(event)
