@@ -6,7 +6,7 @@ from pyvesc.VESC.messages import SetRotorPositionMode, SetRPM
 import random
 import time
 
-BAUD_RATE = 115200
+BAUD_RATE = 38400
 TIMEOUT = 0.05
 
 
