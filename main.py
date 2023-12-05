@@ -82,9 +82,12 @@ async def main_async():
     
 async def run_pico(pb: PicoBoard, display: SliderWindow):
     while True:
-        readings = pb.read()
-        slider = min(readings["slider"] / 1000, 1)
-        display.set_slider_value(slider)
+        try:
+            readings = pb.read()
+            slider = min(readings["slider"] / 1000, 1)
+            display.set_slider_value(slider)
+        except Exception as e:
+            LOGGER.error(e)
         
         await asyncio.sleep(0.05)
 
