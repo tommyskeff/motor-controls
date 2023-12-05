@@ -58,8 +58,8 @@ async def main_async():
             motor = DummyVESC(LOGGER, port)
         case "VESC":
             motor = MotorVESC(LOGGER, port)
-            # pb = PicoBoard(slider_port)
-            # tasks.append(lambda : run_pico(pb, slider))
+            pb = PicoBoard(slider_port)
+            tasks.append(lambda : run_pico(pb, slider))
         case "DUMMY_PICO":
             motor = DummyVESC(LOGGER, port)
             pb = PicoBoard(slider_port)
