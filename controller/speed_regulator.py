@@ -3,7 +3,7 @@ from controller.vesc_controller import MotorVESC
 import asyncio
 import math
 
-CYCLE_INTERVAL = 0.1
+CYCLE_INTERVAL = 0.05
 DISABLED_SPEED = 800
 MAXIMUM_SPEED = 20000
 VAL_ZEROS = 2
