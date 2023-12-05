@@ -25,6 +25,8 @@ class MotorVESC:
         except SerialException as e:
             raise StartupException(f"Failed to connect to serial port '{self._port}'")
         
+        self._logger.info(f"Successfully connected to {self._port}...")
+        
 
     def close(self) -> None:
         self.set_speed(0)
