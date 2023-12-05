@@ -89,7 +89,7 @@ async def run_pico(pb: PicoBoard, display: SliderWindow):
         except Exception as e:
             LOGGER.error(e)
         
-        await asyncio.sleep(0.05)
+        await asyncio.sleep(0.1)
 
 
 if __name__ == "__main__":
