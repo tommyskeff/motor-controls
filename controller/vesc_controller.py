@@ -4,6 +4,7 @@ import logging
 import pyvesc
 from pyvesc.VESC.messages import SetRotorPositionMode, SetRPM
 import random
+import time
 
 BAUD_RATE = 115200
 TIMEOUT = 0.05
@@ -38,6 +39,7 @@ class MotorVESC:
             self._send_message(SetRotorPositionMode(SetRotorPositionMode.DISP_POS_MODE_ENCODER))
 
         self._send_message(SetRPM(speed))
+        time.sleep(0.02)
         
 
     def _send_message(self, message) -> None:

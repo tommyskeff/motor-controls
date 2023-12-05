@@ -84,6 +84,7 @@ async def run_pico(pb: PicoBoard, display: SliderWindow):
     while True:
         try:
             readings = pb.read()
+            time.sleep(0.02)
             slider = min(readings["slider"] / 1000, 1)
             display.set_slider_value(slider)
         except Exception as e:
