@@ -23,7 +23,7 @@ class SliderWindow:
     async def run(self):
         self._running = True
         while self._running:
-            await asyncio.sleep(0.001)
+            await asyncio.sleep(0.01)
             self.root.update()
             
     def set_slider_value(self, value) -> None:
